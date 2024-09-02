@@ -84,6 +84,14 @@ stage("Build & Push Docker Image") {
                }
           }
        }
+ stage("Trigger CD Pipeline") {
+            steps {
+                script {
+                    sh "curl -v -k --user Rakshith k s:${JENKINS_API_TOKEN} -X POST -H 'cache-control: no-cache' -H 'content-type: application/x-www-form-urlencoded' --data 'IMAGE_TAG=${IMAGE_TAG}' 'ec2-15-206-100-94.ap-south-1.compute.amazonaws.com:8080/job/gitops-register-app-cd/buildWithParameters?token=gitops-token'"
+                }
+            }
+       }
+    }
 
     }
 }
